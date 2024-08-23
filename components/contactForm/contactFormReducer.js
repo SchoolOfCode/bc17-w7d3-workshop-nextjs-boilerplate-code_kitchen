@@ -85,16 +85,32 @@ function reducer(state, action) {
         ...state,
         disabled: "disabled",
       };
+      //case 'VAlIDATE_POSTCODE'"
+
+      case 'POSCODE_SUCCESS':
+        return {
+          ...state,
+          postcodeStatus: 200
+        };
+      case 'POSTCODE_FAIL':
+        return {
+          ...state,
+          postcodeStatus: 404
+        };
+
     default:
       return state;
   }
 }
+
 
 async function getPostcode() {
   fetch(`https://api.postcodes.io/postcodes/${state.data.postcode.value}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data.status);
+  const data = await.response.json();
+  console.log(data);
       if (data.status === 200) {
         console.log("success");
         dispatch({
