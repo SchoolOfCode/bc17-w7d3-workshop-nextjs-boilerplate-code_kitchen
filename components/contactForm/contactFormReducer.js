@@ -80,7 +80,7 @@ function reducer(state, action) {
 
 export default function ContactForm() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [postcodeStatus, setPostcodeStatus] = useState("");
+  const [postcodeStatus, setPostcodeStatus] = useState(200);
 
   async function getPostcode() {
     fetch(`https://api.postcodes.io/postcodes/${state.data.postCode.value}`)

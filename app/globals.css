@@ -168,6 +168,13 @@ body {
   color: #fff2e4;
 }
 
+.booking-link-main {
+  color: #fff2e4;
+  text-decoration: none;
+  font-size: 2rem;
+  line-height: 4rem;
+}
+
 /*REVIEW*/
 
 .reviewButtonContainer {

@@ -1,4 +1,5 @@
 import { ImageCard } from "@/components/image/image";
+import Link from "next/link";
 
 function Hero() {
   return (
@@ -16,9 +17,13 @@ function Hero() {
           Discover the <br />
           perfect fireplace ...
         </p>
-        <p className="consultation-paragraph">
-          Book consultation: <span className="number-span">0121 345 6789</span>
-        </p>
+        <div className="consultation-booking-button"> 
+      
+      <Link href="/form" className="booking-link-main"> 
+        Book consultation
+        </Link> 
+      
+        </div>
       </div>
     </section>
   );
