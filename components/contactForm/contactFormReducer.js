@@ -79,12 +79,15 @@ function reducer(state, action) {
 }
 
 async function getPostcode() {
-  fetch(
-    `https://api.postcodes.io/postcodes/${"SE37SD"}`
-  )
+  fetch(`https://api.postcodes.io/postcodes/${"SE37SD"}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.status)
+      console.log(data.status);
+      // fetch the data
+      // get the status code (200)
+      // add postcode-response (200) in our initial state
+      // store the value in our initial state
+      // create a case where we return and update the 200 state (use field and value)
       return data.status;
     });
 }
@@ -98,7 +101,8 @@ export default function ContactForm() {
     }
     if (e.target.name === "phone" && !/^\d+$/.test(e.target.value)) {
       return;
-    }; 
+    }
+    // if the return-status is different from 200 return... else dispatch "set_field_value"
     dispatch({
       type: "SET_FIELD_VALUE",
       field: e.target.name,
@@ -251,7 +255,9 @@ export default function ContactForm() {
                   handleTouch(event);
                 }}
               />
-              {!state.data.phone.isValid && <span>The phone number is not valid</span>}
+              {!state.data.phone.isValid && (
+                <span>The phone number is not valid</span>
+              )}
             </label>
             <label className="designBooking-label">
               Email
