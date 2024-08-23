@@ -12,11 +12,23 @@ const initialState = {
   },
   status: "Submit",
   disabled: "",
+  postcodeStatus: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "SET_FIELD_VALUE":
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.field]: {
+            ...state.data[action.field],
+            value: action.value,
+          },
+        },
+      };
+    case "SET_POSTCODE_VALUE":
       return {
         ...state,
         data: {
@@ -79,12 +91,20 @@ function reducer(state, action) {
 }
 
 async function getPostcode() {
-  fetch(`https://api.postcodes.io/postcodes/${"SE37SD"}`)
+  fetch(`https://api.postcodes.io/postcodes/${state.data.postcode.value}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data.status);
-      // fetch the data
-      // get the status code (200)
+      if (data.status === 200) {
+        console.log("success");
+        dispatch({
+          type: "SET_POSTCODE_VALUE",
+          field: "postcodeStatus",
+          value: data.status,
+        });
+      } else {
+        console.log("faild");
+      }
       // add postcode-response (200) in our initial state
       // store the value in our initial state
       // create a case where we return and update the 200 state (use field and value)
@@ -111,8 +131,8 @@ export default function ContactForm() {
   }
 
   function handleTouch(e) {
+    getPostcode();
     if (!state.data[e.target.name.value]) {
-      console.log("false");
       dispatch({
         type: "INPUT_CHECKED",
         field: e.target.name,
@@ -140,8 +160,6 @@ export default function ContactForm() {
     });
 
     setTimeout(() => {
-      getPostcode();
-
       if (
         !state.data.fullName.value ||
         !state.data.postCode.value ||
