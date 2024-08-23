@@ -12,23 +12,11 @@ const initialState = {
   },
   status: "Submit",
   disabled: "",
-  postcodeStatus: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "SET_FIELD_VALUE":
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          [action.field]: {
-            ...state.data[action.field],
-            value: action.value,
-          },
-        },
-      };
-    case "SET_POSTCODE_VALUE":
       return {
         ...state,
         data: {
@@ -85,51 +73,23 @@ function reducer(state, action) {
         ...state,
         disabled: "disabled",
       };
-      //case 'VAlIDATE_POSTCODE'"
-
-      case 'POSCODE_SUCCESS':
-        return {
-          ...state,
-          postcodeStatus: 200
-        };
-      case 'POSTCODE_FAIL':
-        return {
-          ...state,
-          postcodeStatus: 404
-        };
-
     default:
       return state;
   }
 }
 
-
-async function getPostcode() {
-  fetch(`https://api.postcodes.io/postcodes/${state.data.postcode.value}`)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data.status);
-  const data = await.response.json();
-  console.log(data);
-      if (data.status === 200) {
-        console.log("success");
-        dispatch({
-          type: "SET_POSTCODE_VALUE",
-          field: "postcodeStatus",
-          value: data.status,
-        });
-      } else {
-        console.log("faild");
-      }
-      // add postcode-response (200) in our initial state
-      // store the value in our initial state
-      // create a case where we return and update the 200 state (use field and value)
-      return data.status;
-    });
-}
-
 export default function ContactForm() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [postcodeStatus, setPostcodeStatus] = useState("");
+
+  async function getPostcode() {
+    fetch(`https://api.postcodes.io/postcodes/${state.data.postCode.value}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("print dataStatus", data.status);
+        setPostcodeStatus(data.status);
+      });
+  }
 
   function handleChange(e) {
     if (e.target.name === "email" && !/\S+@\S+\.\S+/.test(e.target.value)) {
@@ -148,6 +108,7 @@ export default function ContactForm() {
 
   function handleTouch(e) {
     getPostcode();
+    console.log(postcodeStatus);
     if (!state.data[e.target.name.value]) {
       dispatch({
         type: "INPUT_CHECKED",
@@ -236,9 +197,7 @@ export default function ContactForm() {
                   handleTouch(event);
                 }}
               />
-              {!state.data.postCode.isValid && (
-                <span>the input is not valid</span>
-              )}
+              {postcodeStatus !== 200 && <span>the postcode is not valid</span>}
             </label>
 
             <label className="designBooking-label">
